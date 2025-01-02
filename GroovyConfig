@@ -1,0 +1,39 @@
+beans = {
+    user(User) {
+        name = "John"
+        surname = "Doe"
+    }
+
+    address(Address) {
+        streetAddress = "123 Main St"
+        city = "Anytown"
+        state = "CA"
+        postalCode = "90210"
+    }
+}
+
+import groovy.lang.GroovyClassLoader;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SpringGroovyConfigApplication implements CommandLineRunner {
+
+    @Autowired
+    private User user;
+
+    @Autowired
+    private Address address;
+
+    public static void main(String[] args) {
+        SpringApplication.run(SpringGroovyConfigApplication.class, args);
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        System.out.println("User: " + user.getName());
+        System.out.println("Address: " + address.getStreetAddress());
+    }
+}
