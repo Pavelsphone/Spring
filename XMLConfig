@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="user" class="com.example.User">
+        <constructor-arg value="John" />
+        <constructor-arg value="Doe" />
+    </bean>
+
+    <bean id="address" class="com.example.Address">
+        <property name="streetAddress" value="123 Main St" />
+        <property name="city" value="Anytown" />
+        <property name="state" value="CA" />
+        <property name="postalCode" value="90210" />
+    </bean>
+</beans>
+
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Component;
+
+@Component
+public class Application {
+
+    private BeanFactory factory;
+
+    public Application() {
+        factory = new XmlBeanFactory(new ClassPathResource("applicationContext.xml"));
+    }
+
+    public void start() {
+        User user = (User) factory.getBean("user");
+        Address address = (Address) factory.getBean("address");
+
+        System.out.println("User: " + user.getName());
+        System.out.println("Address: " + address.getStreetAddress());
+    }
+}
