@@ -1,0 +1,17 @@
+beans = {
+    user(User, scope: 'singleton') {
+        name = "John"
+        surname = "Doe"
+    }
+
+    address(Address, scope: 'prototype') {
+        streetAddress = "123 Main St"
+        city = "Anytown"
+        state = "CA"
+        postalCode = "90210"
+    }
+
+    message(Message, scope: 'request') {
+        text = "Hello World!"
+    }
+}
