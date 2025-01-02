@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="user" class="com.example.User" scope="singleton">
+        <constructor-arg value="John" />
+        <constructor-arg value="Doe" />
+    </bean>
+
+    <bean id="address" class="com.example.Address" scope="prototype">
+        <property name="streetAddress" value="123 Main St" />
+        <property name="city" value="Anytown" />
+        <property name="state" value="CA" />
+        <property name="postalCode" value="90210" />
+    </bean>
+
+    <bean id="message" class="com.example.Message" scope="request">
+        <constructor-arg value="Hello World!" />
+    </bean>
+</beans>
+
+import groovy.lang.GroovyClassLoader;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SpringXmlConfigApplication implements CommandLineRunner {
+
+    private BeanFactory factory;
+
+    public static void main(String[] args) {
+        SpringApplication.run(SpringXmlConfigApplication.class, args);
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        factory = new XmlBeanFactory(new ClassPathResource("applicationContext.xml"));
+
+        // Создаём экземпляры бинов
+        User user = (User) factory.getBean("user");
+        Address address = (Address) factory.getBean("address");
+        Message message = (Message) factory.getBean("message");
+
+        System.out.println("User: " + user.getName());
+        System.out.println("Address: " + address.getStreetAddress());
+        System.out.println("Message: " + message.getText());
+    }
+}
