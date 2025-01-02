@@ -1,0 +1,45 @@
+beans = {
+    user(User, scope: 'singleton') {
+        name = "John"
+        surname = "Doe"
+    }
+
+    address(Address, scope: 'prototype') {
+        streetAddress = "123 Main St"
+        city = "Anytown"
+        state = "CA"
+        postalCode = "90210"
+    }
+
+    message(Message, scope: 'request') {
+        text = "Hello World!"
+    }
+}
+
+import groovy.lang.GroovyClassLoader;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.core.io.ClassPathResource;
+
+public class Application {
+
+    private static BeanFactory factory;
+
+    public static void main(String[] args) {
+        factory = new GroovyXmlBeanFactory(new ClassPathResource("applicationContext.groovy"));
+
+        User user = (User) factory.getBean("user");
+        System.out.println("User: " + user.getName());
+
+        Address address1 = (Address) factory.getBean("address");
+        Address address2 = (Address) factory.getBean("address");
+
+        System.out.println("Address 1: " + address1.getStreetAddress());
+        System.out.println("Address 2: " + address2.getStreetAddress());
+
+        Message message1 = (Message) factory.getBean("message");
+        Message message2 = (Message) factory.getBean("message");
+
+        System.out.println("Message 1: " + message1.getText());
+        System.out.println("Message 2: " + message2.getText());
+    }
+}
