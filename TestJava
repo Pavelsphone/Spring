@@ -1,0 +1,53 @@
+@Configuration
+public class AppConfig {
+    @Bean(name = "user", scope = Scope.SINGLETON)
+    public User user() {
+        return new User("John", "Doe");
+    }
+
+    @Bean(name = "address", scope = Scope.PROTOTYPE)
+    public Address address() {
+        Address address = new Address("123 Main St", "Anytown", "CA", "90210");
+        address.setPostalCode("90210");
+        return address;
+    }
+
+    @Bean(name = "message", scope = Scope.REQUEST)
+    public Message message() {
+        Message message = new Message("Hello World!");
+        return message;
+    }
+}
+
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SpringGroovyConfigApplication implements CommandLineRunner {
+
+    private BeanFactory factory;
+
+    public static void main(String[] args) {
+        SpringApplication.run(SpringGroovyConfigApplication.class, args);
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        User user = (User) factory.getBean("user");
+        System.out.println("User: " + user.getName());
+
+        Address address1 = (Address) factory.getBean("address");
+        Address address2 = (Address) factory.getBean("address");
+
+        System.out.println("Address 1: " + address1.getStreetAddress());
+        System.out.println("Address 2: " + address2.getStreetAddress());
+
+        Message message1 = (Message) factory.getBean("message");
+        Message message2 = (Message) factory.getBean("message");
+
+        System.out.println("Message 1: " + message1.getText());
+        System.out.println("Message 2: " + message2.getText());
+    }
+}
