@@ -1,0 +1,39 @@
+@Configuration
+public class AppConfig {
+    @Bean
+    public User user() {
+        return new User("John", "Doe");
+    }
+
+    @Bean
+    public Address address() {
+        Address address = new Address("123 Main St", "Anytown", "CA", "90210");
+        address.setPostalCode("90210");
+        return address;
+    }
+}
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SpringJavaConfigApplication implements CommandLineRunner {
+
+    @Autowired
+    private User user;
+
+    @Autowired
+    private Address address;
+
+    public static void main(String[] args) {
+        SpringApplication.run(SpringJavaConfigApplication.class, args);
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        System.out.println("User: " + user.getName());
+        System.out.println("Address: " + address.getStreetAddress());
+    }
+}
